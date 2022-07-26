@@ -21,7 +21,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         connectViews()
-
+        openToast(buttonToast!!)
+        openToast(buttonNull!!)
+        openToast(buttonIndex!!)
+        openSnackbar(buttonSnack!!,"Snack bar message")
     }
 
     private fun connectViews() {
@@ -32,6 +35,58 @@ class MainActivity : AppCompatActivity() {
         buttonSnack = findViewById(R.id.btn_snack)
     }
 
+    private fun openToast(button:Button) {
 
+        if(button == buttonNull!!) {
+            button.setOnClickListener {
+                nullException()
+                Toast.makeText(this, "this is null exception", Toast.LENGTH_SHORT).show()
+            }
+        }
+        else if(button == buttonIndex!!) {
+            button.setOnClickListener {
+                indexException()
+                Toast.makeText(this, "this is index out of bound exception", Toast.LENGTH_SHORT).show()
+            }
+
+        } else {
+            button.setOnClickListener {
+                Toast.makeText(this, "This is simple toast message", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    }
+
+    private fun openSnackbar(button:Button, message:String) {
+        button.setOnClickListener {
+            Snackbar.make(constraintLayout!!, message, Snackbar.LENGTH_SHORT).setAction("Undo") {
+
+            }.show()
+        }
+
+    }
+
+    private fun nullException() {
+        try {
+            val number1:Int? = null
+            val operation:Int = number1!! + 10
+        }catch (e:NullPointerException) {
+            Log.e("NULL_EXCEPTION", "Can not do equation with null variable")
+        }
+    }
+
+    private fun indexException() {
+
+        val arr:ArrayList<String> = ArrayList()
+        arr.add("Khalid")
+        arr.add("Ahmad")
+        arr.add("Sarah")
+
+        try {
+            arr.get(3)
+        }catch (e:IndexOutOfBoundsException) {
+            Log.e("INDEX_EXCEPTION", "Can not do, this index is out of bound")
+        }
+    }
 
 }
